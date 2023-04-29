@@ -1,7 +1,7 @@
 package servlets;
 
 import db.DBConnection;
-import db.DBManager;
+;
 import db.Movie;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

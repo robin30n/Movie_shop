@@ -13,6 +13,9 @@
           <li class="nav-item">
             <a class="nav-link" href="/add-movie-page">add movie</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/studios">Studios</a>
+          </li>
         </ul>
       </div>
     </div>

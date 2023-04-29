@@ -21,11 +21,11 @@
 
     <div class="row mt-3">
         <div class="col-12">
-            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#addMovie">
-                + add Movie
+            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#addStudio">
+                + add Studio
             </button>
 
-            <div class="modal fade" id="addMovie" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            <div class="modal fade" id="addStudio" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                  aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -52,47 +52,34 @@
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <th>NAME</th>
-                    <th>Studio</th>
-                    <th>YEAR</th>
-                    <th>BUDGET</th>
-                    <th>BOX_OFFICE</th>
-                    <th>STARS</th>
+                    <th>STUDIO NAME</th>
+                    <th>CREATED YEAR</th>
+                    <th>COUNTRY</th>
                     <th style="width: 10%">DETAILS</th>
                 </tr>
                 </thead>
                 <tbody>
                 <%
-                    ArrayList<Movie> movies = (ArrayList<Movie>) request.getAttribute("fiilms");
-                    for (Movie m : movies) {
+                    ArrayList<Studio> stud = (ArrayList<Studio>) request.getAttribute("studioss");
+                    for (Studio s : stud) {
 
                 %>
                 <tr>
 
-                    <td><%=m.getId()%>
+                    <td><%=s.getId()%>
                     </td>
 
-                    <td><%=m.getName()%>
+                    <td><%=s.getStudio_name()%>
                     </td>
 
-                    <td><%=m.getStudio().getStudio_name()%>
+                    <td><%=s.getStudio_age()%>
                     </td>
 
-                    <td><%=m.getYear()%>
-                    </td>
-
-                    <td><%=m.getBudget()%>
-                    </td>
-
-                    <td><%=m.getBoxOffice()%>
-                    </td>
-
-                    <td><%=m.getStars()%>
+                    <td><%=s.getCountry()%>
                     </td>
 
                     <td>
-                        <a href="/details?movies_id=<%=m.getId()%>" class="btn btn-sm btn-success">DETAILS</a>
-<%--                        <a href="/home.html" class="btn btn-sm btn-success">DETAILS</a>--%>
+                        <a href="/details?studios_id=<%=s.getId()%>" class="btn btn-sm btn-success">DETAILS</a>
                     </td>
 
                 </tr>

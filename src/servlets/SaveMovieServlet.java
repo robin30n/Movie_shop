@@ -1,8 +1,9 @@
 package servlets;
 
 import db.DBConnection;
-import db.DBManager;
+
 import db.Movie;
+import db.Studio;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -18,19 +19,20 @@ public class SaveMovieServlet extends HttpServlet {
 
         int id = Integer.parseInt(req.getParameter("movie_id"));
         String name = req.getParameter("movieName");
-        String studio = req.getParameter("movieStudio");
+        int studioId = Integer.parseInt(req.getParameter("movieStudio"));
         int year =Integer.parseInt(req.getParameter("movieYear"));
         int budget =Integer.parseInt(req.getParameter("movieBudget"));
         int boxOffice = Integer.parseInt(req.getParameter("movieBoxOffice"));
         double stars = Double.parseDouble(req.getParameter("movieStars").replace(',','.'));
         String description = req.getParameter("movieDescription");
 
+        Studio studio1 = DBConnection.getStudio(studioId);
 
         Movie movie = DBConnection.getMovie(id);
         if(movie!=null){
             movie.setId(id);
             movie.setName(name);
-            movie.setStudio(studio);
+            movie.setStudio(studio1);
             movie.setYear(year);
             movie.setBudget(budget);
             movie.setBoxOffice(boxOffice);

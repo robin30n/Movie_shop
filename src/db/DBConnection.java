@@ -28,7 +28,7 @@ public class DBConnection {
 
         try {
             PreparedStatement statement = connection.prepareStatement(
-                    "SELECT m.id, m.name, s.studio_name, m.year, m.budget, m.boxOffice, m.stars, m.description\n" +
+                    "SELECT m.id, m.name, s.studio_name, m.year, m.budget, m.boxOffice, m.stars, m.description, s.studio_age, s.country\n" +
                             "FROM movies m\n" +
                             "         INNER JOIN studio s ON m.studio_id = s.id;");
 
@@ -36,16 +36,24 @@ public class DBConnection {
 
 
             while (resultSet.next()) {
+
+                Studio studio = new Studio();
+                studio.setStudio_name(resultSet.getString("studio_name"));
+                studio.setStudio_age(resultSet.getInt("studio_age"));
+                studio.setCountry(resultSet.getString("country"));
+
                 Movie movie1 = new Movie();
                 movie1.setId(resultSet.getInt("id"));
                 movie1.setName(resultSet.getString("name"));
-                movie1.setStudio(resultSet.getString("studio_name"));
+                movie1.setStudio(studio);
                 movie1.setYear(resultSet.getInt("year"));
                 movie1.setBudget(resultSet.getInt("budget"));
                 movie1.setBoxOffice(resultSet.getInt("boxOffice"));
                 movie1.setStars(resultSet.getDouble("stars"));
                 movie1.setDescription(resultSet.getString("description"));
                 movieArrayList.add(movie1);
+
+
             }
             statement.close();
         } catch (Exception e) {
@@ -58,7 +66,7 @@ public class DBConnection {
     public static void addMovie(Movie movie) {
         try {
             PreparedStatement statement = connection.prepareStatement(
-                    "INSERT INTO movies(name, budget, year, boxoffice, stars, description,studio)\n " +
+                    "INSERT INTO movies(name, budget, year, boxoffice, stars, description,studio_id)\n " +
                             "VALUES (?,?,?,?,?,?,?)");
 
             statement.setString(1, movie.getName());
@@ -67,7 +75,7 @@ public class DBConnection {
             statement.setInt(4, movie.getBoxOffice());
             statement.setDouble(5, movie.getStars());
             statement.setString(6, movie.getDescription());
-            statement.setString(7, movie.getStudio());
+            statement.setInt(7, movie.getStudio().getId());
 
 
             statement.executeUpdate();
@@ -82,11 +90,21 @@ public class DBConnection {
         Movie movie1 = new Movie();
 
         try {
-            PreparedStatement statement = connection.prepareStatement(
-                    "SELECT * FROM movies WHERE id = ? LIMIT 1");
+            PreparedStatement statement = connection.prepareStatement("SELECT m.id, m.name, s.studio_name, m.year, m.budget, m.boxOffice, m.stars, m.description,s.id AS studio_id, s.studio_age, s.country\n" +
+                            "FROM movies m\n" +
+                            "    INNER JOIN studio s ON m.studio_id = s.id WHERE m.id = ? LIMIT 1"
+            );
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
+
+
+                Studio studio = new Studio();
+                studio.setId(resultSet.getInt("studio_id"));
+                studio.setStudio_name(resultSet.getString("studio_name"));
+                studio.setStudio_age(resultSet.getInt("studio_age"));
+                studio.setCountry(resultSet.getString("country"));
+
                 movie1.setId(resultSet.getInt("id"));
                 movie1.setName(resultSet.getString("name"));
                 movie1.setYear(resultSet.getInt("year"));
@@ -94,7 +112,9 @@ public class DBConnection {
                 movie1.setBoxOffice(resultSet.getInt("boxOffice"));
                 movie1.setStars(resultSet.getDouble("stars"));
                 movie1.setDescription(resultSet.getString("description"));
-                movie1.setStudio(resultSet.getString("studio"));
+                movie1.setStudio(studio);
+
+
             } else movie1 = null;
             statement.close();
         } catch (Exception e) {
@@ -127,7 +147,7 @@ public class DBConnection {
                             "    boxOffice   = ?,\n" +
                             "    stars       = ?,\n" +
                             "    description = ?,\n" +
-                            "    studio = ? \n" +
+                            "    studio_id = ? \n" +
                             "WHERE id = ?"
             );
 
@@ -138,7 +158,7 @@ public class DBConnection {
             statement.setInt(4, movie.getBoxOffice());
             statement.setDouble(5, movie.getStars());
             statement.setString(6, movie.getDescription());
-            statement.setString(7, movie.getStudio());
+            statement.setInt(7, movie.getStudio().getId());
             statement.setInt(8, movie.getId());
 
 
@@ -148,5 +168,52 @@ public class DBConnection {
             e.printStackTrace();
         }
     }
+    public static Studio getStudio(int id) {
+        Studio studio = null;
+        try {
 
+            PreparedStatement statement = connection.prepareStatement("" +
+                    "SELECT * FROM studio WHERE id = ?");
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                studio = new Studio();
+                studio.setStudio_name(resultSet.getString("studio_name"));
+                studio.setStudio_age(resultSet.getInt("studio_age"));
+                studio.setCountry(resultSet.getString("country"));
+                studio.setId(resultSet.getInt("id"));
+            }
+            statement.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return studio;
+    }
+
+    public static ArrayList<Studio> getStudios() {
+        ArrayList<Studio> studios = new ArrayList<>();
+        try {
+
+            PreparedStatement statement = connection.prepareStatement("" +
+                    "SELECT * FROM studio");
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Studio studio = new Studio();
+                studio.setStudio_name(resultSet.getString("studio_name"));
+                studio.setStudio_age(resultSet.getInt("studio_age"));
+                studio.setCountry(resultSet.getString("country"));
+                studio.setId(resultSet.getInt("id"));
+
+                studios.add(studio);
+            }
+            statement.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return studios;
+    }
 }

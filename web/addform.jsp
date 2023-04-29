@@ -1,3 +1,4 @@
+<%@ page import="db.Studio" %>
 <form action="/add-movie" method="post">
 
     <div class="row mt-3">
@@ -19,10 +20,16 @@
     <div class="row">
         <div class="col-12">
             <select class="form-select" name="movieStudio">
-                <option value="1">20th Century Studios</option>
-                <option value="2">Relativity Media</option>
-                <option value="3">Paramount Pictures</option>
-                <option value="4">Warner Bros</option>
+                <%
+                    ArrayList<Studio> studios = (ArrayList<Studio>) request.getAttribute("studios");
+                    if (studios != null) {
+                        for (int i = 0; i < studios.size(); i++) {
+                %>
+                <option value="<%=studios.get(i).getId()%>"><%=studios.get(i).getStudio_name()%>></option>
+                <%
+                        }
+                    }
+                %>
             </select>
         </div>
     </div>
@@ -38,7 +45,8 @@
                 <%
                     for (int i = 2023; i > 1980; i--) {
                 %>
-                <option><%=i%></option>
+                <option><%=i%>
+                </option>
                 <%
                     }
                 %>
@@ -81,10 +89,11 @@
             <select class="form-select" name="movieStars">
                 <%
                     int sum = 10;
-                    for (double i = 0; i < 10; i=i+0.1) {
+                    for (double i = 0; i < 10; i = i + 0.1) {
                         String formattedNum = String.format("%.1f", sum - i);
                 %>
-                <option><%= formattedNum %></option>
+                <option><%= formattedNum %>
+                </option>
                 <%
                     }
                 %>

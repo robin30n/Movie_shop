@@ -75,7 +75,7 @@
                     <td><%=m.getName()%>
                     </td>
 
-                    <td><%=m.getStudio()%>
+                    <td><%=m.getStudio().getStudio_name()%>
                     </td>
 
                     <td><%=m.getYear()%>

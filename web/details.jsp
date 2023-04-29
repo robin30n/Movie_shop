@@ -1,5 +1,6 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="db.Movie" %>
+<%@ page import="db.Studio" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -38,7 +39,7 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <input type="text" class="form-control" readonly value="<%=movie.getStudio()%>">
+                    <input type="text" class="form-control" readonly value="<%=movie.getStudio().getStudio_name()%>">
                 </div>
             </div>
 
@@ -138,10 +139,18 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <select class="form-select" name="movieStudio">
-                                                    <option <%=("20th Century Studios".equals(movie.getStudio()) ? "selected" : "")%> >20th Century Studios</option>
-                                                    <option <%=("Paramount Pictures".equals(movie.getStudio()) ? "selected" : "")%> >Paramount Pictures</option>
-                                                    <option <%=("Relativity Media".equals(movie.getStudio()) ? "selected" : "")%> >Relativity Media</option>
-                                                    <option <%=("Warner Bros".equals(movie.getStudio()) ? "selected" : "")%> >Warner Bros</option>
+                                                    <%
+                                                        ArrayList<Studio> studios = (ArrayList<Studio>) request.getAttribute("studiios");
+                                                        if (studios != null) {
+                                                            for (Studio s : studios) {
+                                                    %>
+                                                    <option <%=(s.getId() == movie.getStudio().getId() ? "selected" : "")%> value="<%=s.getId()%>" >
+                                                        <%=s.getStudio_name()%>
+                                                    </option>
+                                                    <%
+                                                            }
+                                                        }
+                                                    %>
                                                 </select>
                                             </div>
                                         </div>
@@ -268,7 +277,8 @@
                                         <h5>Are you sure?</h5>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">NO</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">NO
+                                        </button>
                                         <button type="submit" class="btn btn-danger">YES</button>
                                     </div>
                                 </form>

@@ -9,7 +9,7 @@ public class Movie {
     private double stars;
     private String description;
 
-    private String studio;
+    private Studio studio;
 
 
 
@@ -82,22 +82,11 @@ public class Movie {
     }
 
 
-    public Movie(int id, String name, int year, int budget, int boxOffice, double stars, String description, String studio) {
-        this.id = id;
-        this.name = name;
-        this.year = year;
-        this.budget = budget;
-        this.boxOffice = boxOffice;
-        this.stars = stars;
-        this.description = description;
-        this.studio = studio;
-    }
-
-    public String getStudio() {
+    public Studio getStudio() {
         return studio;
     }
 
-    public void setStudio(String studio) {
+    public void setStudio(Studio studio) {
         this.studio = studio;
     }
 }
